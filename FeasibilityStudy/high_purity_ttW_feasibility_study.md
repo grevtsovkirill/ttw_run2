@@ -31,13 +31,13 @@ Here are yields predictions and some kinematic distributions, scaled to the tota
 
 ![Yield table](yields.png)
 
-![met_pt](ttW_jets_n_sum.pdf)
+![jets_n](ttW_jets_n_sum.png)
 
-![met_pt](ttW_bjets_n_sum.pdf)
+![bjets_n](ttW_bjets_n_sum.png)
 
-![met_pt](ttW_lepton_pt_sum.pdf)
+![lepton_pt](ttW_lepton_pt_sum.png)
 
-![met_pt](ttW_met_pt_sum.pdf)
+![met_pt](ttW_met_pt_sum.png)
 
 
 ## Discussion
