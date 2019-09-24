@@ -1,0 +1,117 @@
+MCGeneratorWeights Nominal
+MuonQuality Tight
+GlobalTriggersLoose 2015@e24_lhmedium_L1EM20VH_OR_e60_lhmedium_OR_e120_lhloose,mu20_iloose_L1MU15_OR_mu50 2016@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2017@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2018@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50
+TruthJetPt 25000.
+MuonPt 27000.
+MuonQualityLoose Medium
+TauPt 27000.
+TruthBlockInfo False
+JetEta 2.5
+DoLoose Data
+ElectronPt 27000.
+JetUncertainties_BunchSpacing 25ns
+LibraryNames libTopEventSelectionTools libTopEventReconstructionTools
+PhotonCollectionName None
+TruthElectronCollectionName TruthElectrons
+OverlapRemovalLeptonDef Tight
+GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20181111/physics_25ns_Triggerno17e33prim.xml
+PDFInfo False
+UseAntiMuons false
+JetGhostTrackDecoName None
+OutputEvents SelectedEvents
+ElectronID TightLH
+TruthElectronPt 27000.
+FwdJetAndMET Default
+JetCollectionName AntiKt4EMPFlowJets
+MuonIsolationLoose None
+Systematics Nominal
+ElectronIsolationLoose None
+ElectronEfficiencySystematicModel SIMPLIFIED
+ElectronIsolation Gradient
+PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
+TruthJetEta 2.5
+WriteTrackingData True
+TruthMuonCollectionName TruthMuons
+TopParticleLevel False
+PRWActualMu_FS GoodRunsLists/data18_13TeV/20181111/purw.actualMu.root
+BTaggingWP MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_70
+MuonEta 2.5
+JetJERSmearingModel Simple
+DoParticleLevelOverlapRemoval True
+JetUncertainties_QGFracFile None
+OutputFormat top::EventSaverFlatNtuple
+ObjectSelectionName top::ObjectLoaderStandardCuts
+JetPt 25000.
+OutputFilename mc16_13TeV.410560.MadGraphPythia8EvtGen_A14_tZ_4fl_tchan_noAllHad.deriv.DAOD_TOPQ1.e5803_s3126_r10724_p3629_20190918_112054-anatop.root
+LargeJetCollectionName None
+TopPartonHistory False
+PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
+TruthPhotonCollectionName TruthPhotons
+ElectronIDLoose MediumLH
+GlobalTriggers 2015@e24_lhmedium_L1EM20VH_OR_e60_lhmedium_OR_e120_lhloose,mu20_iloose_L1MU15_OR_mu50 2016@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2017@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2018@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50
+MuonCollectionName Muons
+TruthLargeRJetCollectionName None
+ElectronVetoLArCrack True
+OverlapRemovalProcedure recommended
+DoTight Both
+TruthMETCollectionName MET_Truth
+UseAodMetaData True
+PRWActualMu_AF GoodRunsLists/data18_13TeV/20181111/purw.actualMu.root
+JVTinMETCalculation True
+TauCollectionName None
+ElectronIsoSFs True
+JetUncertainties_NPModel GlobalReduction
+TrackJetCollectionName None
+PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20181111/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-001.root
+DumpBtagSystsInSystTrees False
+TruthMuonPt 27000.
+GRLDir GoodRunsLists
+EgammaSystematicModel 1NP_v1
+applyTTVACut True
+TruthCollectionName TruthParticles
+MuonIsolation FCTight
+TruthJetCollectionName AntiKt4TruthWZJets
+ElectronCollectionName Electrons
+TruthElectronEta 2.5
+TruthMuonEta 2.5
+JetCalibSequence GSC
+UseGlobalLeptonTriggerSF True
+LargeJetSubstructure None
+TauJetIDWP Medium
+
+SELECTION MME
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+GTRIGDEC
+RECO_LEVEL
+JETCLEAN LooseBad
+NOBADMUON
+MU_N 27000 == 2
+EL_N 27000 == 1
+GTRIGMATCH
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+JET_N_BTAG MV2c10:FixedCutBEff_77 >= 1
+JET_N_BTAG MV2c10:FixedCutBEff_77 >= 2
+SAVE
+
+
+SELECTION EEM
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+GTRIGDEC
+RECO_LEVEL
+JETCLEAN LooseBad
+NOBADMUON
+EL_N 27000 == 2
+MU_N 27000 == 1
+GTRIGMATCH
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+JET_N_BTAG MV2c10:FixedCutBEff_77 >= 1
+JET_N_BTAG MV2c10:FixedCutBEff_77 >= 2
+SAVE
