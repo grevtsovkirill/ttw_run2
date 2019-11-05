@@ -68,7 +68,8 @@ PDFInfo True
 
 ### Object loader/ output configuration
 ObjectSelectionName top::ObjectLoaderStandardCuts
-OutputFormat top::EventSaverFlatNtuple
+#OutputFormat top::EventSaverFlatNtuple
+OutputFormat top::CustomEventSaver
 OutputEvents SelectedEvents
 OutputFilename output.root
 PerfStats No
@@ -131,7 +132,7 @@ BTaggingWP MV2c10:FixedCutBEff_77 MV2c10:Continuous DL1:Continuous
 SaveBootstrapWeights False
 NumberOfBootstrapReplicas 100
 
-#NEvents 1000
+NEvents 1000
 
 ### Global lepton trigger scale factor example
 UseGlobalLeptonTriggerSF True
