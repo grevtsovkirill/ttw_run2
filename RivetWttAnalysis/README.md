@@ -1,4 +1,3 @@
-
 ## setup environment
 
 ```
@@ -10,6 +9,12 @@ source setupRivet.sh
 
 ```
 rivet-buildplugin Rivetttw_ttH-ml.so ttw_ttH-ml.cc
+```
+
+## local runs
+
+```
+athena -c 'xs=1' ttw_tth_grjo.py
 ```
 
 ## submit jobs
