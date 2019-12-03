@@ -91,13 +91,18 @@ namespace Rivet {
       vfs.addVetoOnThisFinalState(dressedelectrons);
       vfs.addVetoOnThisFinalState(dressedmuons);
       vfs.addVetoOnThisFinalState(neutrinos);
-      FastJets jets(vfs, FastJets::ANTIKT, 0.4);
+      //baseline definition
+      FastJets jets(vfs, FastJets::ANTIKT, 0.4); 
       jets.useInvisibles(true);
+
+      //tt l+jet definition
+      //https://rivet.hepforge.org/analyses/ATLAS_2018_I1656578.html does not work with latest rivet
+      //FastJets jets(vfs, FastJets::ANTIKT, 0.4, JetAlg::Muons::ALL, JetAlg::Invisibles::DECAY);
+
       addProjection(jets, "Jets");
 
 
       addProjection(HeavyHadrons(Cuts::abseta < 5 && Cuts::pT > 5*GeV), "BCHadrons");
-      //addProjection(FastJets(FinalState(-2.5,2.5,25*GeV),FastJets::ANTIKT,0.4),"Jets");
       addProjection(MissingMomentum(FinalState(-5,5,0*GeV)),"MissingET");
 
       
