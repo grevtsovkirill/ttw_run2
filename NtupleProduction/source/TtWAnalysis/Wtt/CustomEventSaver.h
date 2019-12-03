@@ -28,15 +28,17 @@ namespace top{
       
     ///-- Keep the asg::AsgTool happy --///
     virtual StatusCode initialize() override {return StatusCode::SUCCESS;}      
-      
+    void CopyLeptons(const xAOD::ElectronContainer& Electrons, const xAOD::MuonContainer& Muons);
     ///-- saveEvent function for top::EventSaverFlatNtuple --///
     ///-- We will be setting our custom variables on a per-event basis --///
     virtual void saveEvent(const top::Event& event) override;
       
   private:
+
+    //static int getBranchStatus(top::TreeManager const *, std::string const & variableName);
     ///-- Some additional custom variables for the output --///
     float m_randomNumber;
-    float m_someOtherVariable;
+    float m_totleptons;
       
     ///-- Tell RootCore to build a dictionary (we need this) --///
     ClassDefOverride(top::CustomEventSaver, 0);
