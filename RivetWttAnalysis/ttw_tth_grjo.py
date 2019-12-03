@@ -7,7 +7,8 @@ theApp.EvtMax = -1
 
 import AthenaPoolCnvSvc.ReadAthenaPool
 
-infile = "ns_input.txt"
+#infile = "input.txt"
+infile = "in_ttz.txt"
 if os.path.exists(infile):
     with open(infile) as f:
         rd=f.read()
@@ -39,7 +40,8 @@ import os
 rivet = Rivet_i()
 rivet.AnalysisPath = os.environ['PWD']
 
-rivet.Analyses +=['ttw_ttH']
+#rivet.Analyses +=['ttw_ttH']
+rivet.Analyses +=['ttwqq']
 rivet.RunName = ""
 # https://twiki.cern.ch/twiki/bin/view/AtlasProtected/RivetForAtlas#Use_with_Multiple_LHE_Weights
 #rivet.WeightName="MUR0.5_MUF0.5_PDF261000"
