@@ -16,6 +16,13 @@ asetup AnalysisTop,21.2.XX,here
 ```
 check for latest version at [release notes](https://twiki.cern.ch/twiki/bin/view/AtlasProtected/AnalysisTop21)
 
+```
+cd ../build/
+ cmake ../source/
+cmake --build ./
+source x86_64-centos7-gcc8-opt/setup.sh 
+```
+
 
 ### Run on grid
 Setup tools:
