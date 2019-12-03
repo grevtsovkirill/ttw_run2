@@ -129,6 +129,7 @@ namespace Rivet {
       vector<string> region_names={"0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t 1b 3j"};
       
       for(int i=0; i<(int)region_names.size();i++){
+	_h_hist_Whmass[i] = bookHisto1D(("Whmass_"+to_string(i)).c_str(), 100, 60, 100);
 	_h_hist_nJets[i] = bookHisto1D(("nJets_"+to_string(i)).c_str(), 7, 2.5, 9.5);
 	_h_hist_lep_Pt_0[i] = bookHisto1D(("lep_Pt_0_"+to_string(i)).c_str(),{0,20,25,33,45,60,80,110,160,500});
 	_h_hist_lep_Pt_1[i] = bookHisto1D(("lep_Pt_1_"+to_string(i)).c_str(), lep_bins);
@@ -274,32 +275,61 @@ namespace Rivet {
       h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
       cf_counter++;
 	  
-      //same sign 
-      if(lepVec.at(0).charge()*lepVec.at(1).charge() <0) vetoEvent;
+      //opposite sign 
+      if(lepVec.at(0).charge()+lepVec.at(1).charge() !=0) vetoEvent;
       h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
       cf_counter++;
        
       //lepton pT 
-      if( lepVec.at(0).pT()/GeV <25) vetoEvent;
-      
+      if( lepVec.at(0).pT()/GeV <27 ) vetoEvent;      
+      h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
+      cf_counter++;
+
+      //lepton sublead pT 
+      if( lepVec.at(1).pT()/GeV <27 ) vetoEvent;      
       h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
       cf_counter++;
       
       
-      //geq1b
-      if( Nbjets < 1 ) vetoEvent;
+      //geq2b
+      if( Nbjets < 2 ) vetoEvent;
       h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
       cf_counter++;
-      //geq3jet 
-      if( Njets < 3) vetoEvent;
+
+      //geq4jet 
+      if( Njets < 4) vetoEvent;
       h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
       cf_counter++;
       
-      sel_array[0]=(Nhtaus == 0 && Nbjets == 1 && Njets >= 4 );  // Region 1
-      sel_array[1]=(Nhtaus == 0 && Nbjets >= 2 && Njets >= 4 );  // Region 2                    
-      sel_array[2]=(Nhtaus == 0 && Nbjets == 1 && Njets == 3 );  // Region 3
-      sel_array[3]=(Nhtaus == 0 && Nbjets >= 2 && Njets == 3 );  // Region 4
-      sel_array[4]=(Nhtaus == 1 && Nbjets >= 1 && Njets >= 3 );  // Region 5
+      //Wqq finder:
+      // for(int i=0; i<Njets;i++){
+      // 	for(int j=0; j<Njets;j++){
+      // 	  if(i!=j){
+      // 	    alljets.at(i)
+      // 	  }
+      // 	}
+      // }
+
+      double bestWmass = 1000.0*TeV;
+      double mWPDG = 80.399*GeV;
+      int Wj1index = -1, Wj2index = -1;
+      for (unsigned int i = 0; i < (ljets.size() - 1); ++i) {
+        for (unsigned int j = i + 1; j < ljets.size(); ++j) {
+          double wmass = (ljets[i].momentum() + ljets[j].momentum()).mass();
+          if (fabs(wmass - mWPDG) < fabs(bestWmass - mWPDG)) {
+            bestWmass = wmass;
+            Wj1index = i;
+            Wj2index = j;
+          }
+        }
+      }
+
+      FourMomentum pjet1 = ljets[Wj1index].momentum();
+      FourMomentum pjet2 = ljets[Wj2index].momentum();
+      // compute hadronic W boson
+      FourMomentum pWhadron = pjet1 + pjet2;
+
+      sel_array[0]=(Nhtaus == 0 && Nbjets >= 2 && Njets >= 4 );  // Region 1
       
       
       for(int i=0; i<(int)region_names.size();i++){
@@ -308,6 +338,8 @@ namespace Rivet {
 	  h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
 	  cf_counter++;
 		      
+	  _h_hist_Whmass[i]->fill(pWhadron.mass()/GeV,weight);
+
 	  _h_hist_nJets[i]->fill(Njets,weight);
 	  _h_hist_nBtagJets[i]->fill(Nbjets,weight);
 	  _h_hist_lep_Pt_0[i]->fill(lepVec.at(0).pT()/GeV,weight);
@@ -363,6 +395,8 @@ namespace Rivet {
     //@{
     //
     Histo1DPtr h_cutflow_2l[2];
+    Histo1DPtr _h_hist_Whmass[10]; 
+
     Histo1DPtr _h_hist_DRll01[10];
     Histo1DPtr _h_hist_jet_Pt_1[10];
     Histo1DPtr _h_hist_jet_Pt_2[10];
