@@ -71,7 +71,7 @@ ObjectSelectionName top::ObjectLoaderStandardCuts
 #OutputFormat top::EventSaverFlatNtuple
 OutputFormat top::CustomEventSaver
 OutputEvents SelectedEvents
-OutputFilename output.root
+OutputFilename cust_output.root
 PerfStats No
 
 
