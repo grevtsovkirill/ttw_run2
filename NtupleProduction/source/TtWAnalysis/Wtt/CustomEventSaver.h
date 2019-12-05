@@ -6,6 +6,9 @@
 #define WTT_CUSTOMEVENTSAVER_H
 
 #include "TopAnalysis/EventSaverFlatNtuple.h"
+#include "Wtt/Lepton.h"
+
+#define LEPTON_ARR_SIZE 3  
 
 /**
  * This class shows you how to extend the flat ntuple to include your own variables
@@ -44,7 +47,9 @@ namespace top{
     ///-- Some additional custom variables for the output --///
     float m_randomNumber;
     float m_totleptons;
-      
+    float lep_Pt[LEPTON_ARR_SIZE];
+    Lepton m_leptons[LEPTON_ARR_SIZE];
+    
     ///-- Tell RootCore to build a dictionary (we need this) --///
     ClassDefOverride(top::CustomEventSaver, 0);
   };
