@@ -37,6 +37,7 @@ namespace top{
     virtual void saveEvent(const top::Event& event) override;
     
   private:
+    std::shared_ptr<top::TopConfig> m_config;
     static int getBranchStatus(top::TreeManager const *, std::string const & variableName);
       
     // 

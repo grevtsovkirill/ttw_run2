@@ -5,6 +5,7 @@
 #include "Wtt/CustomEventSaver.h"
 #include "TopEvent/Event.h"
 #include "TopEventSelectionTools/TreeManager.h"
+#include "TopConfiguration/TopConfig.h"
 
 #include <TRandom3.h>
 
@@ -27,7 +28,8 @@ namespace top{
     ///-- It will setup TTrees for each systematic with a standard set of variables --///
     
     top::EventSaverFlatNtuple::initialize(config, file, extraBranches);
-    
+    m_config = config;
+
     ///-- Loop over the systematic TTrees and add the custom variables --///
     for (auto systematicTree : treeManagers()) {
       systematicTree->makeOutputVariable(m_randomNumber, "randomNumber");
@@ -50,7 +52,9 @@ namespace top{
       sorter.push_back(sorttype_t(&(muItr->p4()), idx++, MUON));
     }
 
-    
+    std::sort(sorter.begin(), sorter.end(), 
+	      [](sorttype_t a, sorttype_t b) { return std::get<0>(a)->Pt() > std::get<0>(b)->Pt(); }); 
+
   }
 
   ///-- saveEvent - run for every systematic and every event --///
@@ -61,14 +65,27 @@ namespace top{
     m_totleptons = 0.;
  
 
+    if (m_config->saveOnlySelectedEvents() && !event.m_saveEvent){
+      return;
+    }
+    if(!m_config->saveOnlySelectedEvents()){
+      top::EventSaverFlatNtuple::saveEvent(event);
+      return;
+    }
+
+
+
     //CopyLeptons(*Electrons,*Muons);
     ///-- Fill them - you should probably do something more complicated --///
     TRandom3 random( event.m_info->eventNumber() );
-    m_randomNumber = random.Rndm();    
-
+    //m_randomNumber = event.m_electrons;    
+    xAOD::ElectronContainer Electrons=event.m_electrons;
+    xAOD::MuonContainer Muons=event.m_muons;
+    m_totleptons = Electrons.size()+Muons.size();
+    CopyLeptons(Electrons,Muons);
     top::EventSaverFlatNtuple::saveEvent(event);
     //std::cout<<m_randomNumber << "  "  << std::endl;
-    //m_totleptons = totleptons;
+    
     
     ///-- Let the base class do all the hard work --///
   }
@@ -77,7 +94,7 @@ namespace top{
 
   int CustomEventSaver::getBranchStatus(top::TreeManager const * treeManager, std::string const & variableName) 
   { 
-    std::vector<std::string> list_of_b_to_remove = {"tjet_","jet_","weight_trackjet","weight_tauSF","el_","mu_","weight_indiv_SF","weight_old"};
+    std::vector<std::string> list_of_b_to_remove = {"tjet_","ljet_","jet_","tau_","ph_","weight_trackjet","weight_tauSF","weight_indiv_SF","weight_old"}; //"el_","mu_"
     for (int i=0; i< list_of_b_to_remove.size(); i++){
       if (variableName.find(list_of_b_to_remove[i])==0  )
 	return 0;
