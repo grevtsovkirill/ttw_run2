@@ -70,10 +70,37 @@ namespace top{
       sorter.push_back(sorttype_t(&(muItr->p4()), idx++, MUON));
     }
 
-    std::sort(sorter.begin(), sorter.end(), 
-	      [](sorttype_t a, sorttype_t b) { return std::get<0>(a)->Pt() > std::get<0>(b)->Pt(); }); 
+    int total_charge=0;
+    for (const auto elItr : Electrons) { total_charge += elItr->charge(); }
+    for (const auto muItr : Muons) { total_charge += muItr->charge(); }
 
-
+    bool is_trilep_q1 = totleptons==3 && abs(total_charge) == 1;
+    
+    // Get p4 for OS in trilep case
+    TLorentzVector p4OS;
+    if (is_trilep_q1) {
+      for (const auto elItr : Electrons) {
+	if (elItr->charge() == -total_charge) {
+	  p4OS = elItr->p4(); break;
+	}
+      }
+      for (const auto muItr : Muons) {
+	if (muItr->charge() == -total_charge) {
+	  p4OS = muItr->p4(); break;
+	}
+      }
+    }
+    
+    if (is_trilep_q1) {
+      // sort by increasing delta R from OS lepton (= OS first)
+      std::sort(sorter.begin(), sorter.end(),
+		[p4OS](sorttype_t a, sorttype_t b) { return std::get<0>(a)->DeltaR(p4OS) < std::get<0>(b)->DeltaR(p4OS); });
+    } else {
+      // sort by decreasing pt
+      std::sort(sorter.begin(), sorter.end(), 
+		[](sorttype_t a, sorttype_t b) { return std::get<0>(a)->Pt() > std::get<0>(b)->Pt(); }); 
+    }
+    
     memset(&m_leptons, 0, sizeof(m_leptons));
     for (short idx = 0; idx < totleptons; ++idx) {    
       const TLorentzVector* p4; int lidx; LepType typ; 
