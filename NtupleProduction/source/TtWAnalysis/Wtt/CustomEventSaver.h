@@ -21,10 +21,13 @@ namespace top{
     CustomEventSaver();
     ///-- Destructor does nothing --///
     virtual ~CustomEventSaver(){}
+    //~CustomEventSaver();
       
     ///-- initialize function for top::EventSaverFlatNtuple --///
     ///-- We will be setting up out custom variables here --///
     virtual void initialize(std::shared_ptr<top::TopConfig> config, TFile* file, const std::vector<std::string>& extraBranches) override;
+
+
       
     ///-- Keep the asg::AsgTool happy --///
     virtual StatusCode initialize() override {return StatusCode::SUCCESS;}      
@@ -32,10 +35,11 @@ namespace top{
     ///-- saveEvent function for top::EventSaverFlatNtuple --///
     ///-- We will be setting our custom variables on a per-event basis --///
     virtual void saveEvent(const top::Event& event) override;
-      
+    
   private:
-
-    //static int getBranchStatus(top::TreeManager const *, std::string const & variableName);
+    static int getBranchStatus(top::TreeManager const *, std::string const & variableName);
+      
+    // 
     ///-- Some additional custom variables for the output --///
     float m_randomNumber;
     float m_totleptons;

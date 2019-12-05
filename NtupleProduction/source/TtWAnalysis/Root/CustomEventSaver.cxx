@@ -9,14 +9,15 @@
 #include <TRandom3.h>
 
 
+
 namespace top{
   ///-- Constrcutor --///
   enum LepType { ELECTRON, MUON, GENERIC };
   CustomEventSaver::CustomEventSaver() :
     m_randomNumber(0.),
     m_totleptons(0.)
-  {  
-    //branchFilters().push_back(std::bind(&getBranchStatus, std::placeholders::_1, std::placeholders::_2));
+  {
+    branchFilters().push_back(std::bind(&getBranchStatus, std::placeholders::_1, std::placeholders::_2));    
   }
   
   ///-- initialize - done once at the start of a job before the loop over events --///
@@ -61,14 +62,28 @@ namespace top{
  
 
     //CopyLeptons(*Electrons,*Muons);
-
     ///-- Fill them - you should probably do something more complicated --///
     TRandom3 random( event.m_info->eventNumber() );
     m_randomNumber = random.Rndm();    
+
+    top::EventSaverFlatNtuple::saveEvent(event);
+    //std::cout<<m_randomNumber << "  "  << std::endl;
     //m_totleptons = totleptons;
     
     ///-- Let the base class do all the hard work --///
-    top::EventSaverFlatNtuple::saveEvent(event);
+  }
+  
+
+
+  int CustomEventSaver::getBranchStatus(top::TreeManager const * treeManager, std::string const & variableName) 
+  { 
+    std::vector<std::string> list_of_b_to_remove = {"tjet_","jet_","weight_trackjet","weight_tauSF","el_","mu_","weight_indiv_SF","weight_old"};
+    for (int i=0; i< list_of_b_to_remove.size(); i++){
+      if (variableName.find(list_of_b_to_remove[i])==0  )
+	return 0;
+    }
+
+    return -1;
   }
   
 }
