@@ -143,12 +143,14 @@ namespace top{
     //m_randomNumber = event.m_electrons;    
     xAOD::ElectronContainer Electrons=event.m_electrons;
     xAOD::MuonContainer Muons=event.m_muons;
+    xAOD::JetContainer Jets=event.m_jets;
     m_totleptons = Electrons.size()+Muons.size();
+    //m_njet = Jets.size();
     CopyLeptons(Electrons,Muons);
     for (size_t idx = 0; idx < LEPTON_ARR_SIZE; ++idx) {  
       lep_Pt[idx]=m_leptons[idx].Pt;
     }
-
+    m_randomNumber= Jets.size();
     top::EventSaverFlatNtuple::saveEvent(event);
     //std::cout<<m_randomNumber << "  "  << std::endl;
     
