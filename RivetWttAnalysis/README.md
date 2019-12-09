@@ -1,7 +1,7 @@
 ## setup environment
 
 ```
-asetup 21.6.3,AthGeneration,here
+asetup 21.6.13,AthGeneration,here
 source setupRivet.sh
 ```
 
