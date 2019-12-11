@@ -8,7 +8,8 @@
 #include "Rivet/Projections/ChargedFinalState.hh"
 #include "Rivet/Projections/MissingMomentum.hh"
 #include "Rivet/Projections/IdentifiedFinalState.hh"
-#include "Rivet/Projections/UnstableFinalState.hh"
+//#include "Rivet/Projections/UnstableFinalState.hh"
+#include "Rivet/Projections/UnstableParticles.hh"
 #include "Rivet/Projections/DressedLeptons.hh"
 #include "Rivet/Projections/FastJets.hh"
 #include "Rivet/Projections/WFinder.hh"
@@ -117,8 +118,10 @@ namespace Rivet {
 
 
       //presel, two light-leptons , same sign  ,lepton0 pT, geq1b,geq3jet,regions
-      vector<string> s_cutDescs =  {  "Preselections","Nleps","SS","lepPt0>25","1b","3j",
-				      "0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t >1b >3j"};
+      //vector<string> s_cutDescs =  {  "Preselections","Nleps","SS","lepPt0>25","1b","3j",
+      //			      "0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t >1b >3j"};
+      vector<string> s_cutDescs =  {   "presel","2L","OS","pt0>27","pt1>27","geq2b", "geq4jet", "found W->qq",
+				       "0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t >1b >3j"};
 
       int Ncuts = s_cutDescs.size();
       h_cutflow_2l[0] = bookHisto1D("cf2l",Ncuts,0,Ncuts );
@@ -273,8 +276,8 @@ namespace Rivet {
       //two light-leptons
       if(nLep!=2) vetoEvent;
       h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
-      cf_counter++;
-	  
+      cf_counter++;	  
+
       //opposite sign 
       if(lepVec.at(0).charge()+lepVec.at(1).charge() !=0) vetoEvent;
       h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
@@ -313,6 +316,7 @@ namespace Rivet {
       double bestWmass = 1000.0*TeV;
       double mWPDG = 80.399*GeV;
       int Wj1index = -1, Wj2index = -1;
+      bool found_w=false;
       for (unsigned int i = 0; i < (ljets.size() - 1); ++i) {
         for (unsigned int j = i + 1; j < ljets.size(); ++j) {
           double wmass = (ljets[i].momentum() + ljets[j].momentum()).mass();
@@ -320,14 +324,22 @@ namespace Rivet {
             bestWmass = wmass;
             Wj1index = i;
             Wj2index = j;
+	    found_w=true;
           }
         }
       }
 
+      // found W->qq
+      if (found_w==false) vetoEvent;
+      h_cutflow_2l[0]->fill(cf_counter,weight);  h_cutflow_2l[1]->fill(cf_counter,1);
+      cf_counter++;
+      
+      
       FourMomentum pjet1 = ljets[Wj1index].momentum();
       FourMomentum pjet2 = ljets[Wj2index].momentum();
       // compute hadronic W boson
       FourMomentum pWhadron = pjet1 + pjet2;
+      
 
       sel_array[0]=(Nhtaus == 0 && Nbjets >= 2 && Njets >= 4 );  // Region 1
       
