@@ -265,7 +265,7 @@ namespace Rivet {
       
 
       bool sel_array[10];
-      vector<string> region_names={"0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t 1b 3j"};
+      vector<string> region_names={"0t 1b 4j", "0t 2b 4j","0t g2b g4j", "0t 2b 3j","1t 1b 3j"};
       
       int cf_counter =0;
       
@@ -341,9 +341,14 @@ namespace Rivet {
       FourMomentum pWhadron = pjet1 + pjet2;
       
 
-      sel_array[0]=(Nhtaus == 0 && Nbjets >= 2 && Njets >= 4 );  // Region 1
+      //sel_array[0]=(Nhtaus == 0 && Nbjets >= 2 && Njets >= 4 );  // Region 1
+      sel_array[0]=(Nhtaus == 0 && Nbjets == 1 && Njets >= 4 );  // Region 1
+      sel_array[1]=(Nhtaus == 0 && Nbjets >= 2 && Njets >= 4 );  // Region 2                    
+      sel_array[2]=(Nhtaus == 0 && Nbjets == 1 && Njets == 3 );  // Region 3
+      sel_array[3]=(Nhtaus == 0 && Nbjets >= 2 && Njets == 3 );  // Region 4
       
       
+      //for(int i=0; i<(int)region_names.size();i++){
       for(int i=0; i<(int)region_names.size();i++){
 	if(sel_array[i]){ 
 	  
