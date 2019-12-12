@@ -92,15 +92,16 @@ namespace Rivet {
       vfs.addVetoOnThisFinalState(dressedelectrons);
       vfs.addVetoOnThisFinalState(dressedmuons);
 
-      //vfs.addVetoOnThisFinalState(neutrinos);
+      vfs.addVetoOnThisFinalState(neutrinos);
       //baseline definition
-      //FastJets jets(vfs, FastJets::ANTIKT, 0.4); 
-      //jets.useInvisibles(true);
+      FastJets jets(vfs, FastJets::ANTIKT, 0.4); 
+      jets.useInvisibles(true);
 
       //tt l+jet definition
       //https://rivet.hepforge.org/analyses/ATLAS_2018_I1656578.html does not work with latest rivet
       //FastJets jets(vfs, FastJets::ANTIKT, 0.4, JetAlg::Muons::ALL, JetAlg::Invisibles::DECAY);
-      FastJets jets(vfs, FastJets::ANTIKT, 0.4, JetAlg::ALL_MUONS, JetAlg::DECAY_INVISIBLES);
+      //FastJets jets(vfs, FastJets::ANTIKT, 0.4, JetAlg::ALL_MUONS, JetAlg::DECAY_INVISIBLES);
+
       addProjection(jets, "Jets");
 
 
