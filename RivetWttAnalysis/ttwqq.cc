@@ -8,7 +8,6 @@
 #include "Rivet/Projections/ChargedFinalState.hh"
 #include "Rivet/Projections/MissingMomentum.hh"
 #include "Rivet/Projections/IdentifiedFinalState.hh"
-//#include "Rivet/Projections/UnstableFinalState.hh"
 #include "Rivet/Projections/UnstableParticles.hh"
 #include "Rivet/Projections/DressedLeptons.hh"
 #include "Rivet/Projections/FastJets.hh"
@@ -36,6 +35,8 @@ namespace Rivet {
     ttwqq() : Analysis("ttwqq")
     {
     }
+    
+    vector<string> region_names={"0t g4j incl","mW20GeV","mW10GeV","mW5GeV"};
     
     /// Set up projections and book histograms
     void init() {
@@ -121,7 +122,7 @@ namespace Rivet {
       //vector<string> s_cutDescs =  {  "Preselections","Nleps","SS","lepPt0>25","1b","3j",
       //			      "0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t >1b >3j"};
       vector<string> s_cutDescs =  {   "presel","2L","OS","pt0>27","pt1>27","geq2b", "geq4jet", "found W->qq",
-				       "0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t >1b >3j"};
+				       "0t g4j incl","mW20GeV","mW10GeV","mW5GeV"};
 
       int Ncuts = s_cutDescs.size();
       h_cutflow_2l[0] = bookHisto1D("cf2l",Ncuts,0,Ncuts );
@@ -129,7 +130,7 @@ namespace Rivet {
       
 
       vector<int> lep_bins_v={0,20,25,33,45,60,80,110,160,500};
-      vector<string> region_names={"0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t 1b 3j"};
+      //vector<string> region_names={"0t 1b 4j", "0t 2b 4j","0t 1b 3j", "0t 2b 3j","1t 1b 3j"};
       
       for(int i=0; i<(int)region_names.size();i++){
 	_h_hist_Whmass[i] = bookHisto1D(("Whmass_"+to_string(i)).c_str(), 100, 60, 100);
@@ -166,12 +167,12 @@ namespace Rivet {
 	
       }
       
-      
     }
 
     
     void analyze(const Event& event) {
       const double weight = event.weight();
+      
 
 
       
@@ -265,7 +266,6 @@ namespace Rivet {
       
 
       bool sel_array[10];
-      vector<string> region_names={"0t 1b 4j", "0t 2b 4j","0t g2b g4j", "0t 2b 3j","1t 1b 3j"};
       
       int cf_counter =0;
       
@@ -342,10 +342,10 @@ namespace Rivet {
       
 
       //sel_array[0]=(Nhtaus == 0 && Nbjets >= 2 && Njets >= 4 );  // Region 1
-      sel_array[0]=(Nhtaus == 0 && Nbjets == 1 && Njets >= 4 );  // Region 1
-      sel_array[1]=(Nhtaus == 0 && Nbjets >= 2 && Njets >= 4 );  // Region 2                    
-      sel_array[2]=(Nhtaus == 0 && Nbjets == 1 && Njets == 3 );  // Region 3
-      sel_array[3]=(Nhtaus == 0 && Nbjets >= 2 && Njets == 3 );  // Region 4
+      sel_array[0]=(Nhtaus == 0 && Njets >= 4 );  // Region inclusive
+      sel_array[1]=(Nhtaus == 0 && Njets >= 4 && abs(mWPDG - pWhadron.mass()/GeV)<20 );  // Region 20GeV Wmass region
+      sel_array[2]=(Nhtaus == 0 && Njets >= 4 && abs(mWPDG - pWhadron.mass()/GeV)<10 );  // Region 10GeV Wmass region
+      sel_array[2]=(Nhtaus == 0 && Njets >= 4 && abs(mWPDG - pWhadron.mass()/GeV)<5 );  // Region 5GeV Wmass region
       
       
       //for(int i=0; i<(int)region_names.size();i++){
@@ -394,12 +394,26 @@ namespace Rivet {
 		    
 	}//region selection		
       } //region loop
+
+      
     } //analyze loop
     
     void finalize() {
-	//MSG_INFO("CROSS SSECTION:"<<crossSection());
+	MSG_INFO("CROSS SSECTION:"<<crossSection());
 	//MSG_INFO("Sum of weights:"<<sumOfWeights());
       
+
+	// Normalize to cross-section
+	//const double sf = (crossSection() / sumOfWeights());
+	//cout << " ========================= CROSS SSECTION:   " << crossSection() << ", Normalize to cross-section = "<< sf<< endl; 
+
+	// for (auto hist : _h) {
+	//scale(h_cutflow_2l[0],sf);
+	//   scale(hist.second, sf);
+	//   // Normalized distributions
+	//   if (hist.first.find("_norm") != string::npos)  normalize(hist.second);
+	// }
+
       }
   
     //@}
