@@ -42,3 +42,19 @@ pathena -c 'xs=0.00052821' --noBuild --extFile=Rivetttwqq.so --extOutFile ttwqq.
 
 # ttbar 0.72977 nb
 pathena -c 'xs=0.72977' --noBuild --extFile=Rivetttwqq.so --extOutFile ttwqq.yoda --inDS=mc15_13TeV.410472.PhPy8EG_A14_ttbar_hdamp258p75_dil.evgen.EVNT.e6348 --outDS=user.kgrevtso.rvt410472_wqq_1212_v0 ttw_tth_grjo.py 
+
+
+
+## Running with docker
+ATLAS provides containers for athen releases. 
+Pull corresponding tag from: https://hub.docker.com/r/atlas/athena/tags
+
+Make accessible local files to avoid loss of the changes in the code as well as option for accessing the local data:
+```
+docker run --rm -it -v $PWD:$PWD -w $PWD atlas/athena
+```
+In the ```source``` setup release:
+```
+source ~/release_setup.sh
+source setupRivet.sh
+```
