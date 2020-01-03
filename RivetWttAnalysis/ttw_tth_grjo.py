@@ -3,12 +3,12 @@ import sys,os
 
 
 theApp.EvtMax = -1
-#theApp.EvtMax=500
+#theApp.EvtMax=5000
 
 import AthenaPoolCnvSvc.ReadAthenaPool
 
-#infile = "input.txt"
-infile = "in_ttz.txt"
+infile = "input.txt"
+#infile = "in_ttz.txt"
 if os.path.exists(infile):
     with open(infile) as f:
         rd=f.read()
@@ -46,7 +46,8 @@ rivet.RunName = ""
 # https://twiki.cern.ch/twiki/bin/view/AtlasProtected/RivetForAtlas#Use_with_Multiple_LHE_Weights
 #rivet.WeightName="MUR0.5_MUF0.5_PDF261000"
 #rivet.WeightName="MUR2_MUF2_PDF261000"
-rivet.HistoFile = "ttw_ttH"
+#rivet.HistoFile = "ttw_ttH"
+rivet.HistoFile = "ttw_qq"
 rivet.DoRootHistos=True
 rivet.CrossSection = xs # xs to be read from athena or pathena commandline
 print "CrossSection",xs
