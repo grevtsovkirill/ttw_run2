@@ -345,7 +345,7 @@ namespace Rivet {
       sel_array[0]=(Nhtaus == 0 && Njets >= 4 );  // Region inclusive
       sel_array[1]=(Nhtaus == 0 && Njets >= 4 && abs(mWPDG - pWhadron.mass()/GeV)<20 );  // Region 20GeV Wmass region
       sel_array[2]=(Nhtaus == 0 && Njets >= 4 && abs(mWPDG - pWhadron.mass()/GeV)<10 );  // Region 10GeV Wmass region
-      sel_array[2]=(Nhtaus == 0 && Njets >= 4 && abs(mWPDG - pWhadron.mass()/GeV)<5 );  // Region 5GeV Wmass region
+      sel_array[3]=(Nhtaus == 0 && Njets >= 4 && abs(mWPDG - pWhadron.mass()/GeV)<5 );  // Region 5GeV Wmass region
       
       
       //for(int i=0; i<(int)region_names.size();i++){
@@ -404,12 +404,15 @@ namespace Rivet {
       
 
 	// Normalize to cross-section
-	//const double sf = (crossSection() / sumOfWeights());
+	const double sf = (crossSection() / sumOfWeights());
+	for(int i=0; i<(int)region_names.size();i++){	
+	  scale(h_cutflow_2l[i],sf); 
+	}
 	//cout << " ========================= CROSS SSECTION:   " << crossSection() << ", Normalize to cross-section = "<< sf<< endl; 
 
 	// for (auto hist : _h) {
 	//scale(h_cutflow_2l[0],sf);
-	//   scale(hist.second, sf);
+	
 	//   // Normalized distributions
 	//   if (hist.first.find("_norm") != string::npos)  normalize(hist.second);
 	// }
